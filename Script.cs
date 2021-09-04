@@ -273,8 +273,7 @@ namespace BrokenVessel
             CancelAttack();
             rig.gravityScale = 0;
             SetRigY(0);
-            On.HeroController.TakeDamage -= _NoTakeDamage;
-            On.HeroController.TakeDamage += _NoTakeDamage;
+            HeroController.instance.SetDamageMode(1);
             SetRigX(HeroController.instance.cState.facingRight ?
                 HeroController.instance.DASH_SPEED : -HeroController.instance.DASH_SPEED);
             animator.Play("Dash Antic 2");
@@ -282,7 +281,7 @@ namespace BrokenVessel
             yield return animator.PlayAnimWait("Dash Antic 3");
             SetRigX(0);
             yield return animator.PlayAnimWait("Dash Recover");
-            On.HeroController.TakeDamage -= _NoTakeDamage;
+            HeroController.instance.SetDamageMode(0);
             
             rig.gravityScale = 1;
         }
@@ -290,8 +289,7 @@ namespace BrokenVessel
         {
             CancelAttack();
             HeroController.instance.TakeMP(24);
-            On.HeroController.TakeDamage -= _NoTakeDamage;
-            On.HeroController.TakeDamage += _NoTakeDamage;
+            HeroController.instance.SetDamageMode(1);
             yield return animator.PlayAnimWait("Downstab Antic");
             animator.Play("Downstab");
             SetRigY(-40);
@@ -321,7 +319,8 @@ namespace BrokenVessel
             animator.Play("Downstab Land");
             
             rig.gravityScale = 1;
-            On.HeroController.TakeDamage -= _NoTakeDamage;
+            HeroController.instance.SetDamageMode(0);
+			HeroController.instance.QuakeInvuln();
         }
         
         bool isShake = false;
