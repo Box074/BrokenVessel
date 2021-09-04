@@ -50,7 +50,7 @@ namespace BrokenVessel
             // damageEnemies.attackType = AttackTypes.Nail;
             // damageEnemies.specialType = SpecialTypes.None;
             // damageEnemies.circleDirection = true;
-			overheadSlash.TranHeroAttack(AttacksType.Nail, 21);
+			overheadSlash.TranHeroAttack(AttackTypes.Nail, 21);
             
 
             animator = gameObject.GetComponent<tk2dSpriteAnimator>();
