@@ -45,11 +45,12 @@ namespace BrokenVessel
             Destroy(control);
             foreach (var v in GetComponents<PlayMakerFSM>()) Destroy(v);
 
-            DamageEnemies damageEnemies = overheadSlash.AddComponent<DamageEnemies>();
-            damageEnemies.magnitudeMult = 1;
-            damageEnemies.attackType = AttackTypes.Nail;
-            damageEnemies.specialType = SpecialTypes.None;
-            damageEnemies.circleDirection = true;
+            // DamageEnemies damageEnemies = overheadSlash.AddComponent<DamageEnemies>();
+            // damageEnemies.magnitudeMult = 1;
+            // damageEnemies.attackType = AttackTypes.Nail;
+            // damageEnemies.specialType = SpecialTypes.None;
+            // damageEnemies.circleDirection = true;
+			overheadSlash.TranHeroAttack(AttacksType.Nail, 21);
             
 
             animator = gameObject.GetComponent<tk2dSpriteAnimator>();
@@ -289,11 +290,15 @@ namespace BrokenVessel
         {
             CancelAttack();
             HeroController.instance.TakeMP(24);
-            HeroController.instance.SetDamageMode(1);
+            HeroController.instance.SetDamageMode(2);
             yield return animator.PlayAnimWait("Downstab Antic");
             animator.Play("Downstab");
-            SetRigY(-40);
-            while (!(rig.velocity.y < 0.1f && rig.velocity.y > -0.1f)) yield return null;
+
+            while (!(rig.velocity.y < 0.1f && rig.velocity.y > -0.1f))
+			{
+				SetRigY(-40);
+				yield return null;
+			}
             DS.Clone().SetPos(transform.position + new Vector3(0, -0.5f, 0)).TranHeroAttack(AttackTypes.Spell, 1)
                 .GetComponent<Rigidbody2D>().velocity = new Vector2(10, 0);
             DS.Clone().SetPos(transform.position + new Vector3(0, -0.5f, 0)).TranHeroAttack(AttackTypes.Spell, 1)
@@ -355,7 +360,8 @@ namespace BrokenVessel
         IEnumerator Attack()
         {
             CancelShake();
-            overheadSlash.GetComponent<DamageEnemies>().damageDealt = PlayerData.instance.nailDamage;
+			overheadSlash.tag = "Nail Attack";
+            overheadSlash.GetComponent<DE>().hit.DamageDealt = PlayerData.instance.nailDamage;
             overheadSlash.SetActive(true);
             overheadSlash.GetComponent<tk2dSpriteAnimator>().Play("Overhead Slash");
             yield return animator.PlayAnimWait("Overhead Slashing");
